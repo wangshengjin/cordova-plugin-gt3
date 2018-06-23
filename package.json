@@ -1,0 +1,26 @@
+{
+  "name": "cordova-plugin-gt3",
+  "version": "1.0.0",
+  "description": "geetest plugin",
+  "cordova": {
+    "id": "cordova-plugin-gt3",
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "keywords": [
+    "geetest",
+    "cordova-ios",
+    "cordova-android"
+  ],
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": {
+    "url": ""
+  },
+  "author": "wangshengjin",
+  "license": "ISC"
+}
