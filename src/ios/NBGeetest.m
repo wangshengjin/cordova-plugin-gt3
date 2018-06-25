@@ -12,7 +12,7 @@ CDVInvokedUrlCommand* currentCommand;
 }
 
 + (void)callback_gee:(NSDictionary*) backdata{
-    [backdata setValue:challenge forKey:@"challenge"];
+    [backdata setValue:challenge forKey:@"g_challenge"];
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:backdata options:NSJSONWritingPrettyPrinted error:&error];
     NSString *jsonString;
