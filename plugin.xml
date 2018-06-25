@@ -10,23 +10,28 @@
         <clobbers target="window.plugins.NBGeetest" />
     </js-module>
     
-    <!-- ios
+    <!-- ios -->
     <platform name="ios">
         
-        <header-file src="src/ios/UMPlugin.h" />
-        <source-file src="src/ios/UMPlugin.m" />
+        <header-file src="src/ios/NBGeetest.h" />
+        <source-file src="src/ios/NBGeetest.m" />
         
         <config-file target="config.xml" parent="/widget/plugins">
-            <feature name="Umeng">
-                <param name="ios-package" value="UMPlugin"/>
+            <feature name="NBGeetest">
+                <param name="ios-package" value="NBGeetest"/>
             </feature>
         </config-file>
-        <source-file src="src/ios/UMMobClick.framework" framework="true" />
-        <framework src="CoreTelephony.framework" />
-        <framework src="libsqlite3.tbd"/>
-        <framework src="libz.tbd"/>
+        <config-file target="*-Info.plist" parent="CFBundleLocalizations">
+            <array>
+		          <string>en</string>
+		          <string>zh_CN</string>
+		          <string>zh_TW</string>
+	          </array>
+        </config-file>
+        <framework src="src/ios/lib/GT3Captcha.framework" custom="true"/>
+        <resource-file src="src/ios/lib/GT3Captcha.bundle"/>
         
-    </platform> -->
+    </platform>
     <!-- android -->
     <platform name="android">
         

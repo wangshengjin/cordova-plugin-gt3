@@ -21,7 +21,7 @@ import android.util.Log;
 public class NBGeetest extends CordovaPlugin {
     private GT3GeetestUtilsBind gt3GeetestUtils;
     private String g_challenge;
-
+    private String api1="";
     @Override
     protected void pluginInitialize() {
 
@@ -35,10 +35,10 @@ public class NBGeetest extends CordovaPlugin {
         gt3GeetestUtils = new GT3GeetestUtilsBind(cordova.getActivity());
     }
 
-    private void getGeetest(String captchaURL, CallbackContext callbackContext) {
+    private void getGeetest(CallbackContext callbackContext) {
         cordova.getActivity().runOnUiThread(new Runnable() {
             public void run() {
-                gt3GeetestUtils.getGeetest(cordova.getActivity(), captchaURL, "", null, new GT3GeetestBindListener() {
+                gt3GeetestUtils.getGeetest(cordova.getActivity(), api1, "", null, new GT3GeetestBindListener() {
                     /**
                      * num 1 点击验证码的关闭按钮来关闭验证码
                      * num 2 点击屏幕关闭验证码
@@ -194,7 +194,7 @@ public class NBGeetest extends CordovaPlugin {
                      * 二次验证失败调用 gt3GeetestUtils.gt3TestClose();
                      */
                     @Override
-                    public void gt3DialogSuccessResult(String result) {
+                    public void gt3DialogSuccesResult(String result) {
                         if (!TextUtils.isEmpty(result)) {
                             try {
                                 JSONObject jobj = new JSONObject(result);
@@ -234,9 +234,11 @@ public class NBGeetest extends CordovaPlugin {
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         Log.d("NBGeetest", "execute action:" + action);
         if (action.equals("getGeetest")) {
-            String captchaURL = args.getString(0);
-            getGeetest(captchaURL, callbackContext);
+            getGeetest(callbackContext);
             return true;
+        }else if(action.equals("initGeetest")) {
+            this.api1 = args.getString(0);
+            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, true));
         }
         return false;
     }
