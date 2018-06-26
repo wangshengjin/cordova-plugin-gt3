@@ -25,6 +25,19 @@ CDVInvokedUrlCommand* currentCommand;
     [nbSelf.commandDelegate sendPluginResult:pluginResult callbackId:currentCommand.callbackId];
 }
 
++ (void)callback_err:(NSDictionary*) errdata{
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:errdata options:NSJSONWritingPrettyPrinted error:&error];
+    NSString *jsonString;
+    if (!jsonData) {
+        NSLog(@"%@",error);
+    }else{
+        jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
+    }
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:jsonString];
+    [nbSelf.commandDelegate sendPluginResult:pluginResult callbackId:currentCommand.callbackId];
+}
+
 +(void)putChallenge:(NSString*) chalg{
     challenge = chalg;
 }
@@ -41,7 +54,8 @@ CDVInvokedUrlCommand* currentCommand;
     NSString* api_2 = @"";
     manager = [[GT3CaptchaManager alloc] initWithAPI1:api_1 API2:api_2 timeout:5.0];
     manager.delegate = self.appDelegate;
-    manager.viewDelegate = self.appDelegate;
+//    manager.viewDelegate = self.appDelegate;
+    [manager disableBackgroundUserInteraction:true];
     [manager useVisualViewWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
     [manager registerCaptcha:nil];
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:TRUE];

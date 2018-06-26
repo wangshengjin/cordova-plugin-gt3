@@ -29,7 +29,7 @@
 #import "MainViewController.h"
 #import "NBGeetest.h";
 #import <GT3Captcha/GT3Captcha.h>
-@interface AppDelegate ()<GT3CaptchaManagerDelegate, GT3CaptchaManagerViewDelegate>
+@interface AppDelegate ()<GT3CaptchaManagerDelegate>
 @end
 
 @implementation AppDelegate
@@ -42,24 +42,30 @@
 
 #pragma mark GT3CaptchaManagerDelegate
 - (void)gtCaptcha:(GT3CaptchaManager *)manager errorHandler:(GT3Error *)error {
-    NSLog(@"asdfasdf");
+    NSDictionary *dict;
     //处理验证中返回的错误
     if (error.code == -999) {
         // 请求被意外中断, 一般由用户进行取消操作导致, 可忽略错误
+        dict = @{@"code":@"-999", @"msg":@"请求被意外中断"};
     }
     else if (error.code == -10) {
         // 预判断时被封禁, 不会再进行图形验证
+        dict = @{@"code":@"-10", @"msg":@"预判断时被封禁"};
     }
     else if (error.code == -20) {
         // 尝试过多
+        dict = @{@"code":@"-20", @"msg":@"尝试过多"};
     }
     else {
         // 网络问题或解析失败, 更多错误码参考开发文档
+        dict = @{@"code":@"-2001", @"msg":@"网络问题或解析失败"};
     }
+    [NBGeetest callback_err:dict];
 }
 
 - (void)gtCaptchaUserDidCloseGTView:(GT3CaptchaManager *)manager {
-    
+    NSDictionary *dict = @{@"code":@"-1001", @"msg":@"用户关闭验证"};
+    [NBGeetest callback_err:dict];
     NSLog(@"User Did Close GTView.");
 }
 
@@ -78,6 +84,7 @@
         [postResult appendFormat:@"%@=%@&",key,obj];
     }];
     [NBGeetest callback_gee:result];
+    [manager closeGTViewIfIsOpen];
     
 }
 
@@ -100,33 +107,6 @@
     mRequest.URL = [NSURL URLWithString:newURL];
     
     replacedHandler(mRequest);
-}
-
-#pragma mark GT3CaptchaManagerViewDelegate
-
-- (void)gtCaptcha:(GT3CaptchaManager *)manager updateCaptchaStatus:(GT3CaptchaState)state error:(GT3Error *)error {
-    
-    switch (state) {
-        case GT3CaptchaStateInactive:
-        case GT3CaptchaStateActive:
-        case GT3CaptchaStateComputing: {
-            //            [self showIndicator];
-            break;
-        }
-        case GT3CaptchaStateInitial:
-        case GT3CaptchaStateFail:
-        case GT3CaptchaStateError:
-        case GT3CaptchaStateSuccess:
-        case GT3CaptchaStateCancel: {
-//            [self removeIndicator];
-            break;
-        }
-        case GT3CaptchaStateWaiting:
-        case GT3CaptchaStateCollecting:
-        default: {
-            break;
-        }
-    }
 }
 
 @end
