@@ -15,7 +15,6 @@ import org.json.JSONObject;
 import com.geetest.sdk.Bind.GT3GeetestBindListener;
 import com.geetest.sdk.Bind.GT3GeetestUtilsBind;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 public class NBGeetest extends CordovaPlugin {
@@ -73,12 +72,29 @@ public class NBGeetest extends CordovaPlugin {
                      */
                     @Override
                     public void gt3FirstResult(JSONObject jsonObject) {
+                        Boolean boo = true;
                         try {
-                            g_challenge = (String) jsonObject.get("challenge");
+                            if(jsonObject != null){
+                                g_challenge = (String) jsonObject.get("challenge");
+                            }else{
+                                boo = false;
+                            }
+
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            boo = false;
                         }
-                        Log.d("aa", "bb");
+                        if(boo == false) {
+                            Map<String, String> validateParams = new HashMap<>();
+                            validateParams.put("msg", "请求失败");
+                            JSONObject errJson = new JSONObject();
+                            try {
+                                errJson.put("errType", validateParams);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, errJson.toString()));
+                            gt3GeetestUtils.gt3TestClose();
+                        }
                     }
 
 
@@ -125,10 +141,11 @@ public class NBGeetest extends CordovaPlugin {
 
                         if (status) {
                             try {
+                                gt3GeetestUtils.gt3TestClose();
                                 JSONObject res_json = new JSONObject(result);
                                 res_json.put("g_challenge", g_challenge);
                                 callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, res_json.toString()));
-                                gt3GeetestUtils.gt3TestClose();
+//                                gt3GeetestUtils.gt3TestClose();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -180,7 +197,7 @@ public class NBGeetest extends CordovaPlugin {
                     @Override
                     public Map<String, String> gt3SecondResult() {
                         Map<String, String> map = new HashMap<String, String>();
-                        map.put("testkey", "12315");
+//                        map.put("testkey", "12315");
                         return map;
 
                     }
@@ -192,7 +209,7 @@ public class NBGeetest extends CordovaPlugin {
                      * 根据二次验证返回的数据判断此次验证是否成功
                      * 二次验证成功调用 gt3GeetestUtils.gt3TestFinish();
                      * 二次验证失败调用 gt3GeetestUtils.gt3TestClose();
-                     */
+
                     @Override
                     public void gt3DialogSuccesResult(String result) {
                         if (!TextUtils.isEmpty(result)) {
@@ -210,7 +227,7 @@ public class NBGeetest extends CordovaPlugin {
                         } else {
                             gt3GeetestUtils.gt3TestClose();
                         }
-                    }
+                    }*/
 
                     /**
                      * 验证过程错误
@@ -224,7 +241,7 @@ public class NBGeetest extends CordovaPlugin {
                     }
                 });
                 //设置是否可以点击屏幕边缘关闭验证码
-                gt3GeetestUtils.setDialogTouch(true);
+                gt3GeetestUtils.setDialogTouch(false);
             }
         });
     }
