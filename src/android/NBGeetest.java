@@ -141,42 +141,16 @@ public class NBGeetest extends CordovaPlugin {
 
                         if (status) {
                             try {
-                                gt3GeetestUtils.gt3TestClose();
                                 JSONObject res_json = new JSONObject(result);
                                 res_json.put("g_challenge", g_challenge);
                                 callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, res_json.toString()));
-//                                gt3GeetestUtils.gt3TestClose();
+                                gt3GeetestUtils.gt3TestFinish();
+                                return;
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            /**
-                             * 基本使用方法：
-                             *
-                             * 1.取出该接口返回的三个参数用于自定义二次验证
-                             * JSONObject res_json = new JSONObject(result);
-                             *
-                             * Map<String, String> validateParams = new HashMap<>();
-                             *
-                             * validateParams.put("geetest_challenge", res_json.getString("geetest_challenge"));
-                             *
-                             * validateParams.put("geetest_validate", res_json.getString("geetest_validate"));
-                             *
-                             * validateParams.put("geetest_seccode", res_json.getString("geetest_seccode"));
-                             *
-                             * 新加参数可以继续比如
-                             *
-                             * validateParams.put("user_key1", "value1");
-                             *
-                             * validateParams.put("user_key2", "value2");
-                             *
-                             * 2.自行做网络请求，请求时用上前面取出来的参数
-                             *
-                             * 3.拿到网络请求后的结果，判断是否成功
-                             *
-                             * 二次验证成功调用 gt3GeetestUtils.gt3TestFinish();
-                             * 二次验证失败调用 gt3GeetestUtils.gt3TestClose();
-                             */
                         }
+                        callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, '{"code":"-3001","msg":"验证错误"}');
                     }
 
 
