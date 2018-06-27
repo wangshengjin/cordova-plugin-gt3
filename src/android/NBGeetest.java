@@ -150,7 +150,14 @@ public class NBGeetest extends CordovaPlugin {
                                 e.printStackTrace();
                             }
                         }
-                        callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, '{"code":"-3001","msg":"验证错误"}');
+                        JSONObject obj = new JSONObject();
+                        try {
+                            obj.put("code", -3001);
+                            obj.put("msg", "验证失败");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, obj.toString()));
                     }
 
 
