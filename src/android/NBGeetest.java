@@ -157,6 +157,7 @@ public class NBGeetest extends CordovaPlugin {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        gt3GeetestUtils.gt3TestClose();
                         callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, obj.toString()));
                     }
 
