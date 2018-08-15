@@ -15,6 +15,8 @@
         
         <header-file src="src/ios/NBGeetest.h" />
         <source-file src="src/ios/NBGeetest.m" />
+        <header-file src="src/ios/AppDelegate+NBGeetest.h" />
+        <source-file src="src/ios/AppDelegate+NBGeetest.m" />
         
         <config-file target="config.xml" parent="/widget/plugins">
             <feature name="NBGeetest">
@@ -51,5 +53,4 @@
             <uses-permission android:name="android.permission.READ_PHONE_STATE" />
         </config-file>
     </platform>
-   <hook type="after_prepare" src="hooks/after_prepare.js" /> 
 </plugin>
