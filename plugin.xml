@@ -37,7 +37,7 @@
     <!-- android -->
     <platform name="android">
         
-        <source-file src="src/android/libs/geetest_testbutton_android_v3.5.3.aar" target-dir="app/libs" />
+        <source-file src="src/android/libs/geetest_sensebot_android_v3.5.7.4.aar" target-dir="app/libs" />
         <source-file src="src/android/NBGeetest.java" target-dir="src/com/gt3" />
         
         <config-file target="res/xml/config.xml" parent="/widget/plugins">
